@@ -1,0 +1,13 @@
+name: .flask-ml-cloud-serverless-demo
+channels:
+  - conda-forge
+dependencies:
+  - pandas=2.2.2
+  - numpy
+  - scikit-learn
+  - black
+  - matplotlib-base
+  - flask
+  - python=3.12
+  - pytest
+  - ipykernel

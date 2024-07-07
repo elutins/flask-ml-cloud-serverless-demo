@@ -1,7 +1,7 @@
-import pytest
 import requests
 
 URL = "https://flask-ml-service-v2.azurewebsites.net:443/predict"
+
 
 def test_app_post_request():
     """Assure we get a 200 response back from POST request"""

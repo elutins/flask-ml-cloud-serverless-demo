@@ -2,11 +2,6 @@ from flask import Flask, request, jsonify
 from flask.logging import create_logger
 import logging
 import traceback
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-
-
 import pandas as pd
 
 import pickle
@@ -31,7 +26,7 @@ ID_FEATURES = ["First Name", "Last Name", "Team"]
 
 @app.route("/")
 def home():
-    html = "<h3>Sklearn Random Forest Predict NHL Player Salary: Hosted by Azure Pipelines</h3>"
+    html = "<h3>Sklearn Random Forest Predict NHL Player Salary: Hosted by Azure</h3>"
     return html.format(format)
 
 
@@ -47,12 +42,6 @@ def predict():
         LOG.error(f"Error loading model: {e}")
         LOG.error(f"Exception traceback: {traceback.format_exc()}")
         return "Model was not loaded"
-
-    # ct = ColumnTransformer(
-    #     transformers=[("cat", OneHotEncoder(handle_unknown="ignore"), ["Position"])],
-    #     remainder="passthrough",
-    # )
-    # pipe = Pipeline([("categorical_encode", ct), ("clf", clf)])
 
     json_payload = request.json
     sample_prediction_records = pd.DataFrame(json_payload)

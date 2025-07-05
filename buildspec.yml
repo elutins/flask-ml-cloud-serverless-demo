@@ -1,0 +1,41 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 20
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+      - REPO_URI="$ECR_REGISTRY/$ECR_REPOSITORY"
+
+  pre_build:
+    commands:
+      - echo "Installing dependencies..."
+      - make install
+      - echo "Linting code..."
+      - make lint
+      - echo "Running tests..."
+      - make test
+
+  build:
+    commands:
+      - echo "Building Docker image..."
+      - docker build -t $ECR_REPOSITORY:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - docker tag $ECR_REPOSITORY:$CODEBUILD_RESOLVED_SOURCE_VERSION $REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
+
+  post_build:
+    commands:
+      - echo "Pushing Docker image to ECR..."
+      - docker push $REPO_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - echo "Build and push complete."
+
+env:
+  variables:
+    ECR_REPOSITORY: flask-ml-cloud-serverless-demo  # <- Your ECR repo name
+    ECR_REGISTRY: 891377263921.dkr.ecr.us-east-2.amazonaws.com  # <- Replace with your account/region
+    AWS_REGION: us-east-2 # <- Replace with your region
+
+artifacts:
+  files:
+    - '**/*'

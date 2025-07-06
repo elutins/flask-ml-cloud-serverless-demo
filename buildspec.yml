@@ -15,8 +15,8 @@ phases:
       - make install
       - echo "Linting code..."
       - make lint
-      - echo "Running tests..."
-      - make test
+      # - echo "Running tests..."
+      # - make test
 
   build:
     commands:

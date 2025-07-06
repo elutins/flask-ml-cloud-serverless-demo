@@ -2,7 +2,7 @@ help:
 	@cat $(MAKEFILE_LIST)
 
 .PHONY: install
-install:
+make install:
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
 
